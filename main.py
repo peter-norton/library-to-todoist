@@ -81,13 +81,13 @@ class LibraryScraper:
         soup = BeautifulSoup(self.browser.response().read(), features="html5lib")
         print('--- parsing %s page...' % page.name)
         table = soup.find(lambda tag: tag.name=='table')
-        rows = table.findAll(lambda tag: tag.name=='tr')
+        rows = table.findAll('tr', class_='patFuncEntry')
         if not rows:
             print('--- no %s table found, exiting process.' % page.name)
             return page
         books = []
         for row in rows:
-            cols = row.find_all('td')
+            cols = row.find_all(['th', 'td'])
             cols = [elem.text.strip() for elem in cols]
             vals = [val for val in cols]
             if len(vals) > 1:
